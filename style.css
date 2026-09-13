@@ -114,6 +114,10 @@ em{font-style:normal;color:var(--red)}
 .desktop-nav a {
     position: relative;
 
+    display: inline-flex;
+    align-items: center;
+    height: 80px;
+
     font-size: 11px;
     font-weight: 700;
 
@@ -147,7 +151,7 @@ em{font-style:normal;color:var(--red)}
     left: 0;
     right: 0;
 
-    bottom: -9px;
+    bottom: 19px;
 
     height: 2px;
 
@@ -292,14 +296,57 @@ em{font-style:normal;color:var(--red)}
 .inline-link span{font-size:17px;color:var(--red)}
 .inline-link.light{color:#fff}
 
-/* IMAGE BREAK */
-.image-break{padding:0 0 112px}
-.image-frame{position:relative;min-height:610px;border-radius:var(--radius);overflow:hidden}
-.image-frame img{width:100%;height:610px;object-fit:cover}
-.image-frame:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent 52%)}
-.image-caption{position:absolute;z-index:2;left:42px;bottom:37px;color:#fff}
-.image-caption span{display:block;color:var(--red);font-size:10px;font-weight:800;letter-spacing:2px}
-.image-caption strong{display:block;margin-top:6px;font:500 38px "Playfair Display",serif}
+/* =========================================================
+   IMAGE BREAK - CORRECTED
+========================================================= */
+
+.image-break {
+    padding: 0;
+    margin: 0;
+}
+
+.image-break .container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
+.image-frame {
+    position: relative;
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    margin: 0;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+.image-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    object-fit: cover;
+}
+
+.image-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, .7),
+        transparent 52%
+    );
+}
+
+.image-caption {
+    position: absolute;
+    z-index: 2;
+    left: 42px;
+    bottom: 37px;
+    color: #fff;
+}
 
 /* =========================================================
    FOUNDERS
@@ -449,25 +496,151 @@ em{font-style:normal;color:var(--red)}
 .pastor-copy .inline-link {
     margin-top: 30px;
 }
-/* PROGRAMMES */
-.programmes{background:#fff}
-.programme-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:58px}
-.programme-panel{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
-.panel-head{display:flex;gap:18px;padding:30px;background:var(--charcoal);color:#fff}
-.panel-head>span{color:var(--red);font-size:11px;font-weight:800}
-.panel-head small{display:block;color:var(--red);font-size:9px;font-weight:800;letter-spacing:1.6px}
-.panel-head h3{margin-top:7px;font-size:27px;line-height:1.05}
-.programme-row{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:14px;padding:18px 23px;border-bottom:1px solid var(--line)}
-.programme-row:last-child{border:0}
-.programme-row:hover{background:var(--cream)}
-.programme-row>b{width:42px;height:31px;border:1px solid var(--line);border-radius:99px;display:grid;place-items:center;font-size:9px}
-.programme-row>strong{font:600 16px "Playfair Display",serif}
-.programme-row>span{font-size:10px;font-weight:700;white-space:nowrap}
-.monthly-row{display:grid;grid-template-columns:38px 1fr;gap:13px;padding:21px 24px;border-bottom:1px solid var(--line)}
-.monthly-row:last-child{border:0}
-.monthly-row>b{color:var(--red);font-size:10px}
-.monthly-row strong{display:block;font-size:15px}
-.monthly-row small{display:block;color:var(--muted);font-size:11px;line-height:1.5;margin-top:4px}
+/* =========================================================
+   PROGRAMMES
+========================================================= */
+
+.programmes {
+    background: #fff;
+}
+
+.programme-grid,
+.programmes-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 22px;
+    margin-top: 58px;
+    align-items: start;
+}
+
+.programme-panel {
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fff;
+}
+
+.panel-head {
+    display: flex;
+    gap: 18px;
+    padding: 30px;
+    background: var(--charcoal);
+    color: #fff;
+}
+
+.panel-head > span {
+    flex: 0 0 auto;
+    color: var(--red);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.panel-head small {
+    display: block;
+    color: var(--red);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+}
+
+.panel-head h3 {
+    margin-top: 7px;
+    font-size: 27px;
+    line-height: 1.05;
+}
+
+.programme-row {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 23px;
+    border-bottom: 1px solid var(--line);
+}
+
+.programme-row:last-child {
+    border-bottom: 0;
+}
+
+.programme-row:hover {
+    background: var(--cream);
+}
+
+.programme-row > b {
+    width: 42px;
+    height: 31px;
+    border: 1px solid var(--line);
+    border-radius: 99px;
+    display: grid;
+    place-items: center;
+    font-size: 9px;
+}
+
+.programme-row > strong {
+    font: 600 16px "Playfair Display", serif;
+}
+
+.programme-row > span {
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.monthly-row {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 13px;
+    padding: 21px 24px;
+    border-bottom: 1px solid var(--line);
+}
+
+.monthly-row:last-child {
+    border-bottom: 0;
+}
+
+.monthly-row > b {
+    color: var(--red);
+    font-size: 10px;
+}
+
+.monthly-row strong {
+    display: block;
+    font-size: 15px;
+}
+
+.monthly-row small {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+    margin-top: 4px;
+}
+
+/* =========================================================
+   RESPONSIVE PROGRAMMES
+========================================================= */
+
+@media (max-width: 760px) {
+    .programme-grid,
+    .programmes-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .panel-head h3 {
+        font-size: 24px;
+    }
+
+    .programme-row {
+        grid-template-columns: 42px minmax(0, 1fr);
+    }
+
+    .programme-row > span {
+        grid-column: 2;
+        white-space: normal;
+    }
+}
 
 /* =========================================================
    SPECIAL PROGRAMME CAROUSEL - SMOOTH TRANSITION
@@ -559,7 +732,14 @@ em{font-style:normal;color:var(--red)}
 
 .special-card:not(.active) > * {
     opacity: 0;
+    visibility: hidden;
     transform: translateY(12px);
+}
+
+.special-card.active > * {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .special-card.active > * {
@@ -708,21 +888,248 @@ em{font-style:normal;color:var(--red)}
 .live-content{position:relative;z-index:2;display:flex;align-items:end;justify-content:space-between;gap:40px;width:100%}
 .live h2{color:#fff;margin-top:18px}
 .live-content p:not(.eyebrow){color:rgba(255,255,255,.65);line-height:1.7;max-width:570px;margin-top:20px}
+/* =========================================================
+   MEDIA SECTION
+========================================================= */
 
-/* MEDIA */
-.media{background:var(--cream)}
-.media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:56px}
-.media-card{background:#fff;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);transition:.3s var(--ease)}
-.media-card:hover{transform:translateY(-5px)}
-.media-visual{height:250px;background:var(--charcoal);color:#fff;padding:24px;display:flex;flex-direction:column;justify-content:space-between}
-.media-visual span{color:var(--red);font-size:10px;font-weight:800}
-.media-visual strong{font:600 42px "Playfair Display",serif}
-.media-visual.worship{background:#181818}
-.media-visual.updates{background:#222}
-.media-card>div:last-child{padding:24px}
-.media-card small{font-size:9px;color:var(--red);font-weight:800;letter-spacing:1.7px}
-.media-card h3{font-size:27px;line-height:1;margin:10px 0}
-.media-card p{color:var(--muted);font-size:12px;line-height:1.6}
+.media {
+    background: var(--cream);
+    overflow: hidden;
+}
+
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 58px;
+    align-items: stretch;
+}
+
+.media-card {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+
+    transition:
+        transform .45s var(--ease),
+        box-shadow .45s var(--ease);
+}
+
+.media-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 55px rgba(0, 0, 0, .12);
+}
+
+/* =========================================================
+   MEDIA IMAGE AREA
+========================================================= */
+
+.media-visual {
+    position: relative;
+    height: 330px;
+    overflow: hidden;
+    isolation: isolate;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    padding: 28px;
+    color: #ffffff;
+
+    background-color: var(--charcoal);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+/* Image zoom layer */
+
+.media-visual::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+
+    background-image: inherit;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: inherit;
+
+    transform: scale(1);
+    transition: transform .7s var(--ease);
+}
+
+.media-card:hover .media-visual::after {
+    transform: scale(1.06);
+}
+
+/* Dark overlay */
+
+.media-visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, .08) 0%,
+        rgba(0, 0, 0, .84) 100%
+    );
+
+    transition: background .45s var(--ease);
+}
+
+.media-card:hover .media-visual::before {
+    background: linear-gradient(
+        180deg,
+        rgba(190, 0, 35, .12) 0%,
+        rgba(0, 0, 0, .82) 100%
+    );
+}
+
+/* =========================================================
+   PNG IMAGE POSITIONS
+========================================================= */
+
+.media-visual.bible {
+    background-image: url("images/sermons.png");
+
+    /*
+       Keeps the preacher's face visible.
+       The image is positioned from the top.
+    */
+    background-position: center top;
+}
+
+.media-visual.worship {
+    background-image: url("images/worship.png");
+    background-position: center center;
+}
+
+.media-visual.updates {
+    background-image: url("images/updates.png");
+    background-position: center center;
+}
+
+/* =========================================================
+   MEDIA IMAGE TEXT
+========================================================= */
+
+.media-visual span {
+    position: relative;
+    z-index: 2;
+
+    align-self: flex-start;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.media-visual strong {
+    position: relative;
+    z-index: 2;
+
+    margin-top: auto;
+
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(38px, 3.5vw, 56px);
+    font-weight: 500;
+    line-height: .95;
+    letter-spacing: -1.5px;
+}
+
+/* =========================================================
+   MEDIA TEXT CONTENT
+========================================================= */
+
+.media-card > div:last-child {
+    flex: 1;
+    padding: 28px 30px 32px;
+    background: #ffffff;
+}
+
+.media-card small {
+    display: block;
+
+    color: var(--red);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+}
+
+.media-card h3 {
+    margin-top: 14px;
+
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -.7px;
+}
+
+.media-card p {
+    margin-top: 14px;
+
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* =========================================================
+   MEDIA RESPONSIVENESS
+========================================================= */
+
+@media (max-width: 1050px) {
+    .media-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .media-visual {
+        height: 300px;
+    }
+}
+
+@media (max-width: 700px) {
+    .media-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .media-visual {
+        height: 320px;
+    }
+
+    .media-card h3 {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .media-grid {
+        margin-top: 38px;
+    }
+
+    .media-visual {
+        height: 280px;
+        padding: 24px;
+    }
+
+    .media-card > div:last-child {
+        padding: 24px;
+    }
+
+    .media-visual strong {
+        font-size: 42px;
+    }
+}
 
 /* =========================================================
    MINISTRIES
@@ -1329,17 +1736,152 @@ em{font-style:normal;color:var(--red)}
 .prayer h2 u{text-decoration-thickness:2px;text-underline-offset:8px}
 .prayer p:last-child{color:rgba(255,255,255,.8);max-width:600px;font-size:14px;line-height:1.7}
 
-/* GIVING */
-.giving{background:var(--cream)}
-.giving-grid{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center}
-.giving-copy h2{margin:18px 0 20px}
-.giving-copy>p:last-child{max-width:520px;color:var(--muted);line-height:1.7;font-size:14px}
-.giving-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:38px;box-shadow:0 20px 60px rgba(0,0,0,.06)}
-.giving-card>small{font-size:9px;font-weight:800;letter-spacing:1.7px;color:var(--red)}
-.giving-card h3{font-size:29px;line-height:1.05;margin:12px 0 28px}
-.bank-line{padding:17px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:5px}
-.bank-line span{font-size:9px;font-weight:800;letter-spacing:1.5px;color:var(--red)}
-.bank-line strong{font-size:14px;line-height:1.45}
+/* =========================================================
+   GIVING SECTION - FINAL LAYOUT FIX
+========================================================= */
+
+.giving {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 110px 0;
+    margin: 0;
+    overflow: visible;
+    background: var(--cream);
+}
+
+.giving .container {
+    width: min(1180px, calc(100% - 56px));
+    margin: 0 auto;
+}
+
+.giving-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 75px;
+    width: 100%;
+}
+
+.giving-copy {
+    min-width: 0;
+}
+
+.giving-copy h2 {
+    margin: 18px 0 22px;
+}
+
+.giving-copy h2 em {
+    display: block;
+    color: var(--red);
+    font-style: normal;
+}
+
+.giving-copy > p:last-child {
+    max-width: 520px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* Information card */
+
+.giving-card {
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    margin: 0;
+    padding: 42px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .06);
+}
+
+.giving-card > small {
+    display: block;
+    margin: 0 0 14px;
+    color: var(--red);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
+}
+
+.giving-card h3 {
+    max-width: 470px;
+    margin: 0 0 30px;
+    font-size: 30px;
+    line-height: 1.08;
+}
+
+/* Banking details */
+
+.bank-details {
+    width: 100%;
+    border-top: 1px solid var(--line);
+}
+
+.bank-line {
+    display: grid;
+    grid-template-columns: 145px minmax(0, 1fr);
+    align-items: start;
+    gap: 24px;
+    padding: 19px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.bank-line span {
+    color: var(--red);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.bank-line strong {
+    color: var(--charcoal);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* Responsive */
+
+@media (max-width: 760px) {
+    .giving {
+        padding: 65px 0;
+    }
+
+    .giving .container {
+        width: min(100% - 36px, 560px);
+    }
+
+    .giving-grid {
+        grid-template-columns: 1fr;
+        gap: 38px;
+    }
+
+    .giving-card {
+        padding: 28px;
+    }
+
+    .giving-card h3 {
+        font-size: 25px;
+    }
+
+    .bank-line {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+}
 
 /* CONTACT */
 .contact{background:var(--charcoal);color:#fff;padding:112px 0}
@@ -1361,20 +1903,126 @@ em{font-style:normal;color:var(--red)}
 .final-cta h2{max-width:900px;margin:18px auto 30px}
 .final-actions{display:flex;justify-content:center;gap:10px}
 
-/* FOOTER */
-.footer{background:#080808;color:#fff}
-.footer-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:50px;padding:65px 0}
-.footer-brand img{width:62px;height:62px;object-fit:contain;margin-bottom:17px}
-.footer-brand strong{display:block;font-size:13px;letter-spacing:.8px}
-.footer-brand>span{display:block;color:rgba(255,255,255,.4);font-size:10px;margin-top:5px}
-.footer-grid>div:not(.footer-brand){display:flex;flex-direction:column;gap:10px}
-.footer-grid small{color:var(--red);font-size:9px;font-weight:800;letter-spacing:1.6px;margin-bottom:5px}
-.footer-grid a,.footer-grid div:not(.footer-brand)>span{color:rgba(255,255,255,.55);font-size:11px}
-.footer-bottom{padding:20px 0 25px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;gap:20px;color:rgba(255,255,255,.35);font-size:9px}
+/* =========================================================
+   ORIGINAL FOOTER
+========================================================= */
 
+.footer {
+    background: #080808;
+    color: #fff;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+    gap: 50px;
+    padding: 65px 0;
+}
+
+.footer-brand img {
+    display: block;
+    width: 62px;
+    height: 62px;
+    object-fit: contain;
+    margin-bottom: 17px;
+}
+
+.footer-brand strong {
+    display: block;
+    font-size: 13px;
+    letter-spacing: .8px;
+}
+
+.footer-brand > span {
+    display: block;
+    margin-top: 5px;
+    color: rgba(255, 255, 255, .4);
+    font-size: 10px;
+}
+
+.footer-grid > div:not(.footer-brand) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-grid small {
+    margin-bottom: 5px;
+    color: var(--red);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+}
+
+.footer-grid a,
+.footer-grid div:not(.footer-brand) > span {
+    color: rgba(255, 255, 255, .55);
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.footer-grid a:hover {
+    color: #fff;
+}
+
+.footer-grid .footer-muted {
+    color: rgba(255, 255, 255, .35);
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 0 25px;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .35);
+    font-size: 9px;
+}
+
+/* Responsive footer */
+
+@media (max-width: 800px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 38px 25px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}
 /* REVEAL */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .reveal.visible{opacity:1;transform:none}
+
+
+/* GENERAL SAFETY AND IMAGE NORMALIZATION */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.person-photo,
+.pastor-photo {
+    background: #ffffff;
+}
+
+.person-photo img,
+.pastor-photo img {
+    object-fit: contain;
+    object-position: center bottom;
+}
 
 /* RESPONSIVE */
 @media(max-width:1050px){
