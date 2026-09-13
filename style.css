@@ -42,19 +42,220 @@ em{font-style:normal;color:var(--red)}
 .btn-ghost{border:1px solid rgba(255,255,255,.42);color:#fff}
 .btn-ghost:hover{background:#fff;color:#111}
 
-/* HEADER */
-.site-header{position:fixed;top:0;left:0;width:100%;z-index:50;background:rgba(255,255,255,.95);border-bottom:1px solid rgba(0,0,0,.07);backdrop-filter:blur(14px);transition:.3s var(--ease)}
-.site-header.scrolled{box-shadow:0 8px 30px rgba(0,0,0,.07)}
-.nav-wrap{height:80px;display:flex;align-items:center;justify-content:space-between}
-.brand img{width:58px;height:58px;object-fit:contain}
-.desktop-nav{display:flex;align-items:center;gap:28px;margin-left:auto;margin-right:30px}
-.desktop-nav a{font-size:11px;font-weight:700;letter-spacing:.35px;transition:.2s}
-.desktop-nav a:hover{color:var(--red)}
-.nav-actions{display:flex;align-items:center;gap:12px}
-.give-btn{background:var(--red);color:#fff;padding:12px 19px;border-radius:999px;font-size:11px;font-weight:800;text-transform:uppercase}
-.menu-btn{display:none;width:42px;height:42px;border:0;background:none;padding:8px;cursor:pointer}
-.menu-btn span{display:block;height:2px;background:#111;margin:5px 0}
-.mobile-nav{display:none}
+/* =========================================================
+   HEADER
+========================================================= */
+
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 50;
+
+    background: rgba(255, 255, 255, .95);
+
+    border-bottom: 1px solid rgba(0, 0, 0, .07);
+
+    backdrop-filter: blur(14px);
+
+    transition:
+        background .3s ease,
+        box-shadow .3s ease,
+        border-color .3s ease;
+}
+
+
+.site-header.scrolled {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .07);
+}
+
+
+/* =========================================================
+   NAV WRAPPER
+========================================================= */
+
+.nav-wrap {
+    height: 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.brand img {
+    width: 58px;
+    height: 58px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   DESKTOP NAVIGATION
+========================================================= */
+
+.desktop-nav {
+    display: flex;
+    align-items: center;
+
+    gap: 28px;
+
+    margin-left: auto;
+    margin-right: 30px;
+}
+
+
+.desktop-nav a {
+    position: relative;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: .35px;
+
+    color: var(--charcoal);
+
+    text-decoration: none;
+
+    transition:
+        color .25s ease;
+}
+
+
+/* HOVER */
+
+.desktop-nav a:hover {
+    color: var(--red);
+}
+
+
+/* =========================================================
+   ACTIVE SECTION
+========================================================= */
+
+.desktop-nav a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: -9px;
+
+    height: 2px;
+
+    background: var(--red);
+
+    transform: scaleX(0);
+
+    transform-origin: center;
+
+    transition:
+        transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+.desktop-nav a.active {
+    color: var(--red);
+}
+
+
+.desktop-nav a.active::after {
+    transform: scaleX(1);
+}
+
+
+/* =========================================================
+   NAV ACTIONS
+========================================================= */
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+/* GIVE BUTTON */
+
+.give-btn {
+    background: var(--red);
+    color: #fff;
+
+    padding: 12px 19px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    text-decoration: none;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+
+.give-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, .12);
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+.menu-btn {
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    border: 0;
+    background: none;
+
+    padding: 8px;
+
+    cursor: pointer;
+}
+
+
+.menu-btn span {
+    display: block;
+
+    height: 2px;
+
+    background: #111;
+
+    margin: 5px 0;
+
+    transition:
+        transform .3s ease,
+        opacity .3s ease;
+}
+
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+.mobile-nav {
+    display: none;
+}
 
 /* HERO */
 .hero{position:relative;min-height:780px;background:#111;color:#fff;display:flex;align-items:center;overflow:hidden}
@@ -269,35 +470,16 @@ em{font-style:normal;color:var(--red)}
 .monthly-row small{display:block;color:var(--muted);font-size:11px;line-height:1.5;margin-top:4px}
 
 /* =========================================================
-   SPECIAL PROGRAMMES
+   SPECIAL PROGRAMME CAROUSEL - SMOOTH TRANSITION
 ========================================================= */
-
-.special {
-    background: var(--charcoal);
-    color: #fff;
-    padding: 112px 0;
-}
-
-.special-head > div:last-child > p {
-    color: rgba(255, 255, 255, .6);
-}
-
-.special-head h2 {
-    color: #fff;
-}
-
-
-/* CAROUSEL */
 
 .special-carousel {
     position: relative;
     height: 450px;
     max-width: 960px;
     margin: 58px auto 0;
+    perspective: 1200px;
 }
-
-
-/* ALL CARDS */
 
 .special-card {
     position: absolute;
@@ -320,55 +502,78 @@ em{font-style:normal;color:var(--red)}
 
     cursor: pointer;
 
-    transition:
-        transform .55s var(--ease),
-        opacity .55s var(--ease),
-        background .3s var(--ease);
-
     overflow: hidden;
+
+    /* IMPORTANT */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform-origin: center center;
+
+    transition:
+        transform .7s cubic-bezier(.22, 1, .36, 1),
+        opacity .7s ease,
+        visibility 0s linear .7s,
+        background-color .35s ease,
+        box-shadow .5s ease;
+
+    will-change: transform, opacity;
 }
 
 
 /* ACTIVE CARD */
 
 .special-card.active {
-    background: var(--red);
     z-index: 10;
 
-    transform: translate(0, 0) scale(1);
+    background: var(--red);
 
     opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform:
+        translate3d(0, 0, 0)
+        scale(1);
 
     box-shadow:
         0 30px 80px rgba(0, 0, 0, .35);
+
+    transition:
+        transform .7s cubic-bezier(.22, 1, .36, 1),
+        opacity .7s ease,
+        visibility 0s linear 0s,
+        background-color .35s ease,
+        box-shadow .5s ease;
 }
 
 
-/* HIDE CONTENT FROM BACKGROUND CARDS */
+/* CONTENT */
+
+.special-card > * {
+    transition:
+        opacity .45s ease,
+        transform .55s cubic-bezier(.22, 1, .36, 1);
+}
 
 .special-card:not(.active) > * {
     opacity: 0;
-    visibility: hidden;
+    transform: translateY(12px);
 }
-
-
-/* ACTIVE CARD CONTENT */
 
 .special-card.active > * {
     opacity: 1;
-    visibility: visible;
+    transform: translateY(0);
 }
 
 
-/* NUMBER */
+/* CARD TEXT */
 
 .special-card > span {
     font-size: 11px;
     font-weight: 800;
 }
-
-
-/* LABEL */
 
 .special-card > small {
     font-size: 9px;
@@ -377,9 +582,6 @@ em{font-style:normal;color:var(--red)}
     margin-top: 7px;
     opacity: .55;
 }
-
-
-/* TITLE */
 
 .special-card > strong {
     margin-top: auto;
@@ -394,9 +596,6 @@ em{font-style:normal;color:var(--red)}
     letter-spacing: -2px;
 }
 
-
-/* ACTION */
-
 .special-card > i {
     margin-top: 24px;
 
@@ -410,40 +609,74 @@ em{font-style:normal;color:var(--red)}
 }
 
 
-/* STACKED CARDS */
+/* =========================================================
+   STACKED CARDS
+========================================================= */
 
 .special-card[data-pos="1"] {
     z-index: 9;
-    transform: translate(22px, 18px) scale(.965);
+
     opacity: .85;
+    visibility: visible;
+
+    transform:
+        translate3d(22px, 18px, 0)
+        scale(.965);
+
+    transition:
+        transform .7s cubic-bezier(.22, 1, .36, 1),
+        opacity .7s ease,
+        visibility 0s linear 0s;
 }
 
 .special-card[data-pos="2"] {
     z-index: 8;
-    transform: translate(44px, 36px) scale(.93);
+
     opacity: .65;
+    visibility: visible;
+
+    transform:
+        translate3d(44px, 36px, 0)
+        scale(.93);
 }
 
 .special-card[data-pos="3"] {
     z-index: 7;
-    transform: translate(66px, 54px) scale(.895);
+
     opacity: .45;
+    visibility: visible;
+
+    transform:
+        translate3d(66px, 54px, 0)
+        scale(.895);
 }
 
 .special-card[data-pos="4"] {
     z-index: 6;
-    transform: translate(88px, 72px) scale(.86);
+
     opacity: .30;
+    visibility: visible;
+
+    transform:
+        translate3d(88px, 72px, 0)
+        scale(.86);
 }
 
 .special-card[data-pos="5"] {
     z-index: 5;
-    transform: translate(110px, 90px) scale(.825);
+
     opacity: .18;
+    visibility: visible;
+
+    transform:
+        translate3d(110px, 90px, 0)
+        scale(.825);
 }
 
 
-/* CAROUSEL STATUS */
+/* =========================================================
+   CAROUSEL STATUS
+========================================================= */
 
 .carousel-status {
     max-width: 960px;
@@ -468,6 +701,7 @@ em{font-style:normal;color:var(--red)}
 
     background: rgba(255, 255, 255, .25);
 }
+
 /* LIVE */
 .live{position:relative;min-height:520px;display:flex;align-items:center;overflow:hidden;color:#fff}
 .live-bg{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.9),rgba(0,0,0,.52)),url("images/church.png") center/cover no-repeat}
@@ -490,14 +724,602 @@ em{font-style:normal;color:var(--red)}
 .media-card h3{font-size:27px;line-height:1;margin:10px 0}
 .media-card p{color:var(--muted);font-size:12px;line-height:1.6}
 
-/* MINISTRIES */
-.ministries-grid{display:grid;grid-template-columns:repeat(4,1fr);margin-top:58px;border:1px solid var(--line)}
-.ministry{min-height:260px;padding:28px;border-right:1px solid var(--line);transition:.3s}
-.ministry:last-child{border:0}
-.ministry:hover{background:var(--cream)}
-.ministry>span{color:var(--red);font-size:10px;font-weight:800}
-.ministry h3{font-size:35px;margin-top:72px}
-.ministry p{color:var(--muted);font-size:12px;line-height:1.6;margin-top:8px}
+/* =========================================================
+   MINISTRIES
+========================================================= */
+
+.ministries-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    margin-top: 58px;
+
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+}
+
+
+/* =========================================================
+   MINISTRY CARD
+========================================================= */
+
+.ministry {
+    --ministry-image: none;
+
+    position: relative;
+
+    min-height: 300px;
+    padding: 30px;
+
+    background: #fff;
+
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+    isolation: isolate;
+
+    transition:
+        transform .55s cubic-bezier(.22, 1, .36, 1),
+        border-color .4s ease;
+}
+
+
+/* =========================================================
+   HOVER IMAGE
+========================================================= */
+
+.ministry::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background-image: var(--ministry-image);
+    background-size: cover;
+    background-position: center;
+
+    opacity: 0;
+
+    transform: scale(1.08);
+
+    transition:
+        opacity .65s ease,
+        transform .9s cubic-bezier(.22, 1, .36, 1);
+
+    z-index: -2;
+}
+
+
+/* =========================================================
+   IMAGE OVERLAY
+========================================================= */
+
+.ministry::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, .15) 0%,
+            rgba(0, 0, 0, .68) 100%
+        );
+
+    opacity: 0;
+
+    transition:
+        opacity .5s ease;
+
+    z-index: -1;
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.ministry > span {
+    position: relative;
+    z-index: 2;
+
+    color: var(--red);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    transition:
+        color .4s ease,
+        transform .5s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.ministry-content {
+    position: relative;
+    z-index: 2;
+
+    margin-top: auto;
+
+    transition:
+        transform .55s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+.ministry h3 {
+    margin: 0;
+
+    color: var(--charcoal);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: 35px;
+    font-weight: 600;
+
+    line-height: 1;
+
+    transition:
+        color .4s ease;
+}
+
+
+.ministry p {
+    max-width: 280px;
+
+    margin-top: 10px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    line-height: 1.6;
+
+    transition:
+        color .4s ease;
+}
+
+
+/* =========================================================
+   EXPLORE
+========================================================= */
+
+.ministry-explore {
+    position: absolute;
+
+    right: 30px;
+    bottom: 30px;
+
+    z-index: 3;
+
+    color: #fff;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+    text-decoration: none;
+
+    opacity: 0;
+
+    transform: translateX(-12px);
+
+    transition:
+        opacity .4s ease,
+        transform .5s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+.ministry-explore span {
+    display: inline-block;
+
+    margin-left: 6px;
+
+    transition:
+        transform .35s ease;
+}
+
+
+/* =========================================================
+   HOVER STATE
+========================================================= */
+
+.ministry:hover {
+    transform: translateY(-7px);
+
+    border-color: transparent;
+}
+
+
+.ministry:hover::before {
+    opacity: 1;
+
+    transform: scale(1);
+}
+
+
+.ministry:hover::after {
+    opacity: 1;
+}
+
+
+.ministry:hover > span {
+    color: #fff;
+
+    transform: translateY(-2px);
+}
+
+
+.ministry:hover .ministry-content {
+    transform: translateY(-8px);
+}
+
+
+.ministry:hover h3,
+.ministry:hover p {
+    color: #fff;
+}
+
+
+.ministry:hover .ministry-explore {
+    opacity: 1;
+
+    transform: translateX(0);
+}
+
+
+.ministry:hover .ministry-explore span {
+    transform: translateX(4px);
+}
+
+
+/* =========================================================
+   CHILDREN IMAGE POSITION
+========================================================= */
+
+.ministry:nth-child(4)::before {
+    background-position: center 42%;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .ministries-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .ministries-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ministry {
+        min-height: 280px;
+        padding: 28px;
+    }
+
+}
+
+/* =========================================================
+   SERVICE DEPARTMENTS
+========================================================= */
+
+.departments-section {
+    background: #fff;
+    color: var(--charcoal);
+    padding: 112px 0;
+}
+
+
+.departments-section .section-heading-row {
+    margin-bottom: 58px;
+}
+
+
+.departments-section .section-heading-row h2 {
+    color: var(--charcoal);
+}
+
+
+.departments-section .section-heading-row h2 span {
+    color: var(--red);
+}
+
+
+.departments-section .section-heading-row > div:last-child > p {
+    max-width: 620px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   DEPARTMENT GRID
+========================================================= */
+
+.departments-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+}
+
+
+/* =========================================================
+   DEPARTMENT CARD
+========================================================= */
+
+.department-card {
+    --department-image: none;
+
+    position: relative;
+
+    min-height: 390px;
+    padding: 30px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+    isolation: isolate;
+
+    background: var(--cream);
+
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+
+    transition:
+        transform .55s cubic-bezier(.22, 1, .36, 1),
+        border-color .4s ease;
+}
+
+
+/* IMAGE LAYER */
+
+.department-card::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background-image: var(--department-image);
+    background-size: cover;
+    background-position: center;
+
+    opacity: 0;
+    transform: scale(1.08);
+
+    transition:
+        opacity .65s ease,
+        transform .9s cubic-bezier(.22, 1, .36, 1);
+
+    z-index: -2;
+}
+
+
+/* DARK OVERLAY */
+
+.department-card::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, .18),
+            rgba(0, 0, 0, .78)
+        );
+
+    opacity: 0;
+
+    transition:
+        opacity .5s ease;
+
+    z-index: -1;
+}
+
+
+/* NUMBER */
+
+.department-number {
+    position: relative;
+    z-index: 2;
+
+    color: var(--red);
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    transition:
+        color .4s ease;
+}
+
+
+/* CONTENT */
+
+.department-content {
+    position: relative;
+    z-index: 2;
+
+    margin-top: auto;
+
+    transition:
+        transform .55s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+.department-content h3 {
+    margin: 0;
+
+    color: var(--charcoal);
+
+    font-family:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    font-size: clamp(36px, 3.5vw, 54px);
+    font-weight: 600;
+
+    line-height: .95;
+    letter-spacing: -1.5px;
+
+    transition:
+        color .4s ease;
+}
+
+
+.department-content p {
+    max-width: 280px;
+
+    margin-top: 14px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    line-height: 1.7;
+
+    transition:
+        color .4s ease;
+}
+
+
+/* LINK */
+
+.department-link {
+    position: absolute;
+
+    right: 30px;
+    bottom: 30px;
+
+    z-index: 3;
+
+    color: #fff;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+
+    text-decoration: none;
+
+    opacity: 0;
+    transform: translateX(-12px);
+
+    transition:
+        opacity .4s ease,
+        transform .5s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+.department-link span {
+    display: inline-block;
+    margin-left: 6px;
+
+    transition:
+        transform .35s ease;
+}
+
+
+/* =========================================================
+   HOVER EFFECT
+========================================================= */
+
+.department-card:hover {
+    transform: translateY(-7px);
+    border-color: transparent;
+}
+
+
+.department-card:hover::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+.department-card:hover::after {
+    opacity: 1;
+}
+
+
+.department-card:hover .department-number {
+    color: #fff;
+}
+
+
+.department-card:hover .department-content {
+    transform: translateY(-8px);
+}
+
+
+.department-card:hover .department-content h3,
+.department-card:hover .department-content p {
+    color: #fff;
+}
+
+
+.department-card:hover .department-link {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+
+.department-card:hover .department-link span {
+    transform: translateX(4px);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .departments-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .departments-section {
+        padding: 80px 0;
+    }
+
+    .departments-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .department-card {
+        min-height: 320px;
+        padding: 28px;
+    }
+
+}
 
 /* PRAYER */
 .prayer{background:var(--red);color:#fff}
