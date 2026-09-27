@@ -589,3 +589,121 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+/* =========================================================
+   HERO IMAGE - SCROLL WITH PAGE
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const hero = document.querySelector(".hero");
+    const heroImage = document.querySelector(".hero-image");
+
+    if (!hero || !heroImage) return;
+
+    let lastScrollY = window.scrollY;
+    let currentPosition = 0;
+    let ticking = false;
+
+    const updateHeroImage = () => {
+
+        const scrollY = window.scrollY;
+
+        /*
+         * The image follows the user's scrolling.
+         *
+         * Scroll down  -> image moves upward
+         * Scroll up    -> image moves downward
+         */
+        const movement = scrollY * 0.18;
+
+        heroImage.style.transform =
+            `translate3d(0, ${-movement}px, 0) scale(1.04)`;
+
+        lastScrollY = scrollY;
+        ticking = false;
+    };
+
+    const onScroll = () => {
+
+        if (!ticking) {
+
+            window.requestAnimationFrame(
+                updateHeroImage
+            );
+
+            ticking = true;
+        }
+    };
+
+    window.addEventListener(
+        "scroll",
+        onScroll,
+        { passive: true }
+    );
+
+    window.addEventListener(
+        "resize",
+        updateHeroImage
+    );
+
+    updateHeroImage();
+});
+
+/* =========================================================
+   LIVE SECTION IMAGE PARALLAX
+   ONLY .live-bg MOVES
+========================================================= */
+
+(() => {
+    const liveSection = document.querySelector(".live");
+    const liveBg = document.querySelector(".live-bg");
+
+    if (!liveSection || !liveBg) return;
+
+    let ticking = false;
+
+    function updateLiveParallax() {
+        const rect = liveSection.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+
+        /* Only animate while the LIVE section is visible */
+        if (rect.bottom > 0 && rect.top < viewportHeight) {
+
+            /*
+             * Progress:
+             * 0 = section entering viewport
+             * 1 = section leaving viewport
+             */
+            const progress =
+                (viewportHeight - rect.top) /
+                (viewportHeight + rect.height);
+
+            /*
+             * Move image DOWN as user scrolls DOWN.
+             * The section itself does NOT move.
+             */
+            const movement = (progress - 0.5) * 140;
+
+            liveBg.style.transform =
+                `translate3d(0, ${movement}px, 0)`;
+        }
+
+        ticking = false;
+    }
+
+    function requestUpdate() {
+        if (!ticking) {
+            window.requestAnimationFrame(updateLiveParallax);
+            ticking = true;
+        }
+    }
+
+    window.addEventListener("scroll", requestUpdate, {
+        passive: true
+    });
+
+    window.addEventListener("resize", requestUpdate);
+
+    updateLiveParallax();
+})();
