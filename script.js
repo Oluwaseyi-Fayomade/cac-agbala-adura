@@ -47,9 +47,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (menuButton && mobileNav) {
 
+        mobileNav.inert = true;
+        mobileNav.setAttribute("aria-hidden", "true");
+
         const closeMobileMenu = () => {
 
             mobileNav.classList.remove("active");
+            mobileNav.inert = true;
+            mobileNav.setAttribute("aria-hidden", "true");
 
             menuButton.setAttribute(
                 "aria-expanded",
@@ -66,6 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const openMobileMenu = () => {
 
+            mobileNav.inert = false;
+            mobileNav.setAttribute("aria-hidden", "false");
             mobileNav.classList.add("active");
 
             menuButton.setAttribute(
@@ -109,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         window.addEventListener("resize", () => {
 
-            if (window.innerWidth > 800) {
+            if (window.innerWidth > 960) {
                 closeMobileMenu();
             }
 
@@ -220,6 +227,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     "active",
                     position === 0
                 );
+                card.inert = position !== 0;
+                card.setAttribute("aria-hidden", String(position !== 0));
+                card.setAttribute("aria-pressed", String(position === 0));
 
 
                 card.setAttribute(
@@ -268,18 +278,8 @@ document.addEventListener("DOMContentLoaded", () => {
         cards.forEach((card, index) => {
 
             card.setAttribute(
-                "role",
-                "button"
-            );
-
-            card.setAttribute(
-                "tabindex",
-                "0"
-            );
-
-            card.setAttribute(
                 "aria-label",
-                `Show special programme ${index + 1}`
+                `Show programme: ${card.dataset.title || `programme ${index + 1}`}`
             );
 
             card.setAttribute(
@@ -298,28 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             });
 
-
-            card.addEventListener("keydown", event => {
-
-                if (
-                    event.key === "Enter" ||
-                    event.key === " "
-                ) {
-
-                    event.preventDefault();
-
-                    if (index !== currentIndex) {
-                        updateCarousel(index);
-                    } else {
-                        showNextCard();
-                    }
-
-                }
-
-            });
-
         });
-
 
         /*
             Initial carousel state
@@ -339,6 +318,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 "active",
                 position === 0
             );
+            card.inert = position !== 0;
+            card.setAttribute("aria-hidden", String(position !== 0));
+            card.setAttribute("aria-pressed", String(position === 0));
 
 
             card.setAttribute(
@@ -396,7 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 link.setAttribute(
                     "aria-current",
-                    "page"
+                    "location"
                 );
 
             } else {
@@ -569,6 +551,8 @@ document.addEventListener("DOMContentLoaded", () => {
         ) {
 
             mobileNav.classList.remove("active");
+            mobileNav.inert = true;
+            mobileNav.setAttribute("aria-hidden", "true");
 
             if (menuButton) {
 
@@ -581,6 +565,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     "aria-label",
                     "Open menu"
                 );
+                menuButton.focus();
 
             }
 
@@ -598,8 +583,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const hero = document.querySelector(".hero");
     const heroImage = document.querySelector(".hero-image");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (!hero || !heroImage) return;
+    if (!hero || !heroImage || reduceMotion) return;
 
     let lastScrollY = window.scrollY;
     let currentPosition = 0;
@@ -658,8 +644,9 @@ document.addEventListener("DOMContentLoaded", () => {
 (() => {
     const liveSection = document.querySelector(".live");
     const liveBg = document.querySelector(".live-bg");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (!liveSection || !liveBg) return;
+    if (!liveSection || !liveBg || reduceMotion) return;
 
     let ticking = false;
 

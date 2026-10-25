@@ -20,10 +20,12 @@
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--white);color:var(--text);font-family:"DM Sans",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body{margin:0;padding-top:86px;background:var(--white);color:var(--text);font-family:"DM Sans",Arial,sans-serif;-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit}
+.skip-link{position:fixed;top:8px;left:8px;z-index:2000;padding:12px 16px;background:var(--charcoal);color:#fff;transform:translateY(-160%)}
+.skip-link:focus{transform:translateY(0)}
 .container{width:min(calc(100% - 56px),var(--max));margin:auto}
 .section{padding:112px 0}
 h1,h2,h3,p{margin:0}
@@ -55,7 +57,7 @@ em{font-style:normal;color:var(--red)}
 /* HERO */
 .hero{position:relative;min-height:780px;background:#111;color:#fff;display:flex;align-items:center;overflow:hidden}
 .hero-image,.hero-shade{position:absolute;inset:0}
-.hero-image{background:url("images/church.png") center/cover no-repeat;transform:scale(1.02)}
+.hero-image{background:url("images/church.jpg") center/cover no-repeat;transform:scale(1.02)}
 .hero-shade{background:linear-gradient(90deg,rgba(5,5,5,.91),rgba(5,5,5,.68) 43%,rgba(5,5,5,.18)),linear-gradient(0deg,rgba(0,0,0,.42),transparent 55%)}
 .hero-inner{position:relative;z-index:2;padding:130px 0 105px}
 .hero-copy{max-width:900px}
@@ -86,6 +88,356 @@ em{font-style:normal;color:var(--red)}
 .inline-link{display:inline-flex;gap:15px;align-items:center;margin-top:30px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid currentColor;padding-bottom:7px}
 .inline-link span{font-size:17px;color:var(--red)}
 .inline-link.light{color:#fff}
+
+/* =========================================================
+   HEADER / NAVIGATION
+========================================================= */
+
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.96);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(21, 21, 21, .08);
+    transition: box-shadow .25s ease, background-color .25s ease;
+}
+
+.nav-wrap {
+    width: min(calc(100% - 56px), var(--max));
+    height: 86px;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: clamp(16px, 2vw, 30px);
+}
+
+.site-header.scrolled {
+    background: rgba(255, 255, 255, .98);
+    box-shadow: 0 8px 28px rgba(17, 17, 17, .08);
+}
+
+/* LOGO */
+
+.brand {
+    display: flex;
+    align-items: center;
+
+    flex: 0 0 auto;
+
+    height: 58px;
+    gap: 12px;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.brand-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.brand-copy strong {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .55px;
+    text-transform: uppercase;
+}
+
+.brand-copy small {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .15px;
+}
+
+.brand img {
+    display: block;
+
+    width: 58px;
+    height: 58px;
+
+    max-width: 58px;
+    max-height: 58px;
+
+    object-fit: contain;
+}
+
+
+/* DESKTOP NAV */
+
+.desktop-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 28px;
+
+    margin-left: auto;
+}
+
+.desktop-nav a {
+    display: inline-flex;
+    align-items: center;
+
+    position: relative;
+
+    color: var(--text);
+
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition:
+        color .25s ease,
+        transform .25s ease;
+}
+
+.desktop-nav a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -9px;
+
+    width: 0;
+    height: 2px;
+
+    background: var(--red);
+
+    transition: width .25s ease;
+}
+
+.desktop-nav a.active,
+.desktop-nav a[aria-current="location"] {
+    color: var(--red);
+}
+
+.desktop-nav a.active::after,
+.desktop-nav a[aria-current="location"]::after {
+    width: 100%;
+}
+
+.desktop-nav a:hover {
+    color: var(--red);
+}
+
+.desktop-nav a:hover::after {
+    width: 100%;
+}
+
+
+/* RIGHT-SIDE ACTIONS */
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    flex: 0 0 auto;
+}
+
+
+/* GIVE BUTTON */
+
+.give-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 82px;
+    height: 40px;
+
+    padding: 0 20px;
+
+    background: var(--red);
+    color: #fff;
+
+    border: 1px solid var(--red);
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+
+    text-decoration: none;
+
+    transition:
+        background .25s ease,
+        border-color .25s ease,
+        transform .25s ease;
+}
+
+.give-btn:hover {
+    background: var(--red-dark);
+    border-color: var(--red-dark);
+
+    transform: translateY(-2px);
+}
+
+
+/* MOBILE MENU BUTTON */
+
+.menu-btn {
+    display: none;
+
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+}
+
+.menu-btn:hover {
+    border-color: var(--red);
+}
+
+.menu-btn[aria-expanded="true"] span:first-child {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.menu-btn[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-btn[aria-expanded="true"] span:last-child {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+.menu-btn span {
+    display: block;
+
+    width: 22px;
+    height: 2px;
+
+    margin: 5px auto;
+
+    background: var(--black);
+
+    transition:
+        transform .25s ease,
+        opacity .25s ease;
+}
+
+
+/* MOBILE NAV */
+
+.mobile-nav {
+    display: none;
+}
+
+
+/* =========================================================
+   HEADER RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .nav-wrap {
+        gap: 25px;
+    }
+
+    .desktop-nav {
+        gap: 17px;
+    }
+
+    .desktop-nav a {
+        font-size: 10px;
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .nav-wrap {
+        width: min(calc(100% - 32px), var(--max));
+        height: 70px;
+    }
+
+    .brand {
+        height: 50px;
+    }
+
+    .brand img {
+        width: 50px;
+        height: 50px;
+
+        max-width: 50px;
+        max-height: 50px;
+    }
+
+    .desktop-nav,
+    .give-btn {
+        display: none;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .mobile-nav {
+        display: flex;
+
+        max-height: 0;
+
+        overflow: hidden;
+
+        flex-direction: column;
+
+        background: #fff;
+
+        border-top: 1px solid var(--line);
+
+        transition:
+            max-height .35s var(--ease);
+    }
+
+    .mobile-nav.active {
+        max-height: 500px;
+    }
+
+    .mobile-nav a {
+        display: block;
+
+        padding: 15px 16px;
+
+        color: var(--text);
+
+        font-size: 12px;
+        font-weight: 700;
+
+        text-decoration: none;
+
+        border-bottom: 1px solid var(--line);
+    }
+
+    .mobile-nav a:hover {
+        color: var(--red);
+    }
+
+    .mobile-nav a:last-child {
+        background: var(--red);
+        color: #fff;
+    }
+
+}
 
 /* =========================================================
    IMAGE BREAK - CORRECTED
@@ -701,7 +1053,7 @@ em{font-style:normal;color:var(--red)}
             rgba(0,0,0,.30) 72%,
             rgba(0,0,0,.20) 100%
         ),
-        url("images/church.png");
+        url("images/church.jpg");
 
     background-size: cover;
     background-position: center center;
@@ -934,7 +1286,7 @@ em{font-style:normal;color:var(--red)}
 ========================================================= */
 
 .media-visual.bible {
-    background-image: url("images/sermons.png");
+    background-image: url("images/sermons.jpg");
 
     /*
        Keeps the preacher's face visible.
@@ -944,12 +1296,12 @@ em{font-style:normal;color:var(--red)}
 }
 
 .media-visual.worship {
-    background-image: url("images/worship.png");
+    background-image: url("images/worship.jpg");
     background-position: center center;
 }
 
 .media-visual.updates {
-    background-image: url("images/updates.png");
+    background-image: url("images/updates.jpg");
     background-position: center center;
 }
 
@@ -2464,3 +2816,94 @@ body {
     .reveal{opacity:1;transform:none}
 }
 
+
+
+/* Visible keyboard focus */
+:focus-visible {
+    outline: 3px solid #C8102E;
+    outline-offset: 4px;
+}
+
+.btn-ghost:focus-visible,
+.btn-red:focus-visible,
+.mobile-nav a:last-child:focus-visible,
+.special-card:focus-visible {
+    outline-color: #fff;
+}
+
+/* Keep decorative motion disabled when requested by the visitor. */
+@media (prefers-reduced-motion: reduce) {
+    .hero-image,
+    .live-bg {
+        transform: none !important;
+    }
+}
+
+
+/* Header layout: switch to the compact menu before navigation becomes crowded. */
+@media (max-width: 960px) {
+    body { padding-top: 72px; }
+
+    .nav-wrap {
+        width: min(calc(100% - 32px), var(--max));
+        height: 72px;
+    }
+
+    .brand {
+        height: 50px;
+        gap: 10px;
+    }
+
+    .brand img {
+        width: 48px;
+        height: 48px;
+        max-width: 48px;
+        max-height: 48px;
+    }
+
+    .brand-copy strong { font-size: 10px; }
+    .brand-copy small { font-size: 9px; }
+
+    .desktop-nav,
+    .give-btn { display: none; }
+
+    .menu-btn { display: block; }
+
+    .site-header .mobile-nav {
+        display: flex;
+        max-height: 0;
+        overflow: hidden;
+        flex-direction: column;
+        background: #fff;
+        border-top: 1px solid var(--line);
+        box-shadow: 0 16px 24px rgba(17, 17, 17, .08);
+        transition: max-height .3s var(--ease);
+    }
+
+    .site-header .mobile-nav.active { max-height: 520px; }
+
+    .site-header .mobile-nav a {
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 600;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .site-header .mobile-nav a:hover { color: var(--red); }
+
+    .site-header .mobile-nav a:last-child {
+        color: #fff;
+        background: var(--red);
+    }
+}
+
+@media (max-width: 420px) {
+    .nav-wrap { width: calc(100% - 24px); gap: 8px; }
+    .brand { gap: 8px; }
+    .brand-copy small { display: none; }
+    .brand-copy strong { font-size: 9px; letter-spacing: .25px; }
+}
