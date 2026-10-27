@@ -17,9 +17,10 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="images/church.jpg" fetchpriority="high">
 
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
@@ -375,7 +376,7 @@
 
                 <div class="image-frame reveal">
 
-                    <img src="images/church.jpg" alt="Christ Apostolic Church Agbala Adura church building">
+                    <img src="images/church.jpg" alt="Christ Apostolic Church Agbala Adura church building" loading="lazy" decoding="async">
 
                     <div class="image-caption">
 
@@ -444,7 +445,7 @@
 
                         <div class="person-photo">
 
-                            <img src="images/founder-prophet.jpg" alt="Late Prophet Aboluwarin">
+                            <img src="images/founder-prophet.jpg" alt="Late Prophet Aboluwarin" loading="lazy" decoding="async">
 
                         </div>
 
@@ -452,7 +453,7 @@
                         <div class="person-info">
 
                             <span>
-                                CO-FOUNDER
+                                FOUNDER
                             </span>
 
                             <h3>
@@ -460,7 +461,7 @@
                             </h3>
 
                             <p>
-                                Late Prophet Aboluwarin was a co-founder of Christ
+                                Late Prophet Aboluwarin was the founder of Christ
                                 Apostolic Church Agbala Adura. Together with his wife,
                                 Lady Evangelist Aboluwarin, he helped establish the
                                 spiritual foundation of the church and its enduring
@@ -478,7 +479,7 @@
 
                         <div class="person-photo">
 
-                            <img src="images/founder-evangelist.jpg" alt="Lady Evangelist Aboluwarin">
+                            <img src="images/founder-evangelist.jpg" alt="Lady Evangelist Aboluwarin" loading="lazy" decoding="async">
 
                         </div>
 
@@ -522,7 +523,7 @@
 
                 <div class="pastor-photo reveal">
 
-                    <img src="images/pastor.jpg" alt="Pastor Odelade">
+                    <img src="images/pastor.jpg" alt="Pastor Odelade" loading="lazy" decoding="async">
 
                 </div>
 
@@ -881,7 +882,7 @@
 
                             <div class="monthly-row">
 
-                                <b>04</b>
+                                <b>05</b>
 
                                 <div>
 
@@ -899,7 +900,7 @@
                             
                             <div class="monthly-row">
 
-                                <b>05</b>
+                                <b>06</b>
 
                                 <div>
 
@@ -966,14 +967,14 @@
                 </div>
 
 
-                <div class="special-carousel reveal" id="specialCarousel">
+                <div class="special-carousel reveal" id="specialCarousel" role="region" aria-roledescription="carousel" aria-label="Special programmes">
 
                     <button class="special-card active" type="button" data-title="Lemisoro">
 
                         <span>01</span>
                         <small>SPECIAL PROGRAMME</small>
                         <strong>Lemisoro</strong>
-                        <i>Tap to continue</i>
+                        <i>Select a programme</i>
 
                     </button>
 
@@ -983,7 +984,7 @@
                         <span>02</span>
                         <small>SPECIAL PROGRAMME</small>
                         <strong>Founders Day</strong>
-                        <i>Tap to continue</i>
+                        <i>Select a programme</i>
 
                     </button>
 
@@ -993,7 +994,7 @@
                         <span>03</span>
                         <small>SPECIAL PROGRAMME</small>
                         <strong>40 Days Prayer</strong>
-                        <i>Tap to continue</i>
+                        <i>Select a programme</i>
 
                     </button>
 
@@ -1003,7 +1004,7 @@
                         <span>04</span>
                         <small>SPECIAL PROGRAMME</small>
                         <strong>Oru - Atunyan</strong>
-                        <i>Tap to continue</i>
+                        <i>Select a programme</i>
 
                     </button>
 
@@ -1013,7 +1014,7 @@
                         <span>05</span>
                         <small>SPECIAL PROGRAMME</small>
                         <strong>21 Days</strong>
-                        <i>Tap to continue</i>
+                        <i>Select a programme</i>
 
                     </button>
 
@@ -1025,7 +1026,7 @@
                         <strong>
                             7 Sundays Power of Resurrection
                         </strong>
-                        <i>Back to first ↻</i>
+                        <i>Select a programme</i>
 
                     </button>
 
@@ -1034,7 +1035,7 @@
 
                 <div class="carousel-status">
 
-                    <strong id="specialCurrent" aria-live="polite" aria-atomic="true">
+                    <strong id="specialCurrent" aria-hidden="true">
                         01
                     </strong>
 
@@ -1044,7 +1045,14 @@
                         06 SPECIAL PROGRAMMES
                     </span>
 
+                    <div class="carousel-controls" role="group" aria-label="Programme controls">
+                        <button type="button" id="specialPrevious" aria-label="Previous programme">←</button>
+                        <button type="button" id="specialNext" aria-label="Next programme">→</button>
+                    </div>
+
                 </div>
+
+                <p class="visually-hidden" id="specialAnnouncement" aria-live="polite" aria-atomic="true"></p>
 
             </div>
 
@@ -1651,15 +1659,6 @@
             </div>
         </section>
 
-        </div>
-
-        </div>
-
-        </div>
-
-        </section>
-
-
         <!-- =====================================================
              CONTACT
         ====================================================== -->
@@ -1813,28 +1812,21 @@
                     <span class="social-name">Facebook</span>
                 </a>
 
-                <!-- Replace these sample URLs with the church's official profiles. -->
-                <a
-                    href="https://www.youtube.com/@your-church-channel"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <span
                     class="social-item"
-                    aria-label="Agbala Adura on YouTube (sample link)"
+                    role="group" aria-label="YouTube profile link is not configured"
                 >
-                    <span class="social-icon youtube-icon">&#9654;</span>
-                    <span class="social-name">YouTube</span>
-                </a>
+                    <span class="social-icon youtube-icon" aria-hidden="true">&#9654;</span>
+                    <span class="social-name">YouTube <small class="social-note">Link pending</small></span>
+                </span>
 
-                <a
-                    href="https://www.tiktok.com/@your-church-account"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <span
                     class="social-item"
-                    aria-label="Agbala Adura on TikTok (sample link)"
+                    role="group" aria-label="TikTok profile link is not configured"
                 >
-                    <span class="social-icon tiktok-icon">&#9835;</span>
-                    <span class="social-name">TikTok</span>
-                </a>
+                    <span class="social-icon tiktok-icon" aria-hidden="true">&#9835;</span>
+                    <span class="social-name">TikTok <small class="social-note">Link pending</small></span>
+                </span>
 
             </div>
         </div>

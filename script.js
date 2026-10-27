@@ -1,696 +1,168 @@
-/* =========================================================
-   AGBALA ADURA - COMPLETE JAVASCRIPT
-========================================================= */
+/* Small, dependency-free interactions for the single-page church site. */
+
+document.body.classList.add("js-enabled");
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
-
     const header = document.getElementById("siteHeader");
     const menuButton = document.getElementById("mobileMenuButton");
     const mobileNav = document.getElementById("mobileNav");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-
-    /* =====================================================
-       HEADER SCROLL EFFECT
-    ===================================================== */
-
-    if (header) {
-
-        const updateHeader = () => {
-            header.classList.toggle(
-                "scrolled",
-                window.scrollY > 30
-            );
-        };
-
-        updateHeader();
-
-        window.addEventListener(
-            "scroll",
-            updateHeader,
-            { passive: true }
-        );
-
-    }
-
-
-    /* =====================================================
-       MOBILE NAVIGATION
-    ===================================================== */
-
-    if (menuButton && mobileNav) {
-
+    const closeMobileMenu = ({ restoreFocus = false } = {}) => {
+        if (!menuButton || !mobileNav) return;
+        mobileNav.classList.remove("active");
         mobileNav.inert = true;
         mobileNav.setAttribute("aria-hidden", "true");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.setAttribute("aria-label", "Open menu");
+        if (restoreFocus) menuButton.focus();
+    };
 
-        const closeMobileMenu = () => {
+    if (menuButton && mobileNav) {
+        closeMobileMenu();
 
-            mobileNav.classList.remove("active");
-            mobileNav.inert = true;
-            mobileNav.setAttribute("aria-hidden", "true");
-
-            menuButton.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-            menuButton.setAttribute(
-                "aria-label",
-                "Open menu"
-            );
-
-        };
-
-
-        const openMobileMenu = () => {
+        menuButton.addEventListener("click", () => {
+            if (mobileNav.classList.contains("active")) {
+                closeMobileMenu({ restoreFocus: true });
+                return;
+            }
 
             mobileNav.inert = false;
             mobileNav.setAttribute("aria-hidden", "false");
             mobileNav.classList.add("active");
-
-            menuButton.setAttribute(
-                "aria-expanded",
-                "true"
-            );
-
-            menuButton.setAttribute(
-                "aria-label",
-                "Close menu"
-            );
-
-        };
-
-
-        menuButton.addEventListener("click", () => {
-
-            const isOpen =
-                mobileNav.classList.contains("active");
-
-            if (isOpen) {
-                closeMobileMenu();
-            } else {
-                openMobileMenu();
-            }
-
+            menuButton.setAttribute("aria-expanded", "true");
+            menuButton.setAttribute("aria-label", "Close menu");
+            mobileNav.querySelector("a")?.focus({ preventScroll: true });
         });
 
-
-        mobileNav
-            .querySelectorAll("a")
-            .forEach(link => {
-
-                link.addEventListener(
-                    "click",
-                    closeMobileMenu
-                );
-
-            });
-
+        mobileNav.querySelectorAll("a").forEach(link => {
+            link.addEventListener("click", () => closeMobileMenu());
+        });
 
         window.addEventListener("resize", () => {
-
-            if (window.innerWidth > 960) {
-                closeMobileMenu();
-            }
-
+            if (window.innerWidth > 960) closeMobileMenu();
         });
 
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape" && mobileNav.classList.contains("active")) {
+                closeMobileMenu({ restoreFocus: true });
+            }
+        });
     }
 
-
-    /* =====================================================
-       SCROLL REVEAL ANIMATION
-    ===================================================== */
-
-    const revealElements =
-        document.querySelectorAll(".reveal");
-
-    if ("IntersectionObserver" in window) {
-
-        const revealObserver =
-            new IntersectionObserver(
-                entries => {
-
-                    entries.forEach(entry => {
-
-                        if (
-                            entry.isIntersecting &&
-                            !entry.target.classList.contains("visible")
-                        ) {
-
-                            entry.target.classList.add(
-                                "visible"
-                            );
-
-                            revealObserver.unobserve(
-                                entry.target
-                            );
-
-                        }
-
-                    });
-
-                },
-                {
-                    threshold: 0.12,
-                    rootMargin: "0px 0px -40px 0px"
-                }
-            );
-
-
-        revealElements.forEach(element => {
-            revealObserver.observe(element);
-        });
-
+    const reveals = document.querySelectorAll(".reveal");
+    if (reduceMotion.matches || !("IntersectionObserver" in window)) {
+        reveals.forEach(element => element.classList.add("visible"));
     } else {
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
 
-        revealElements.forEach(element => {
-            element.classList.add("visible");
-        });
-
+        reveals.forEach(element => revealObserver.observe(element));
     }
 
-
-    /* =====================================================
-       SPECIAL PROGRAMMES CAROUSEL
-    ===================================================== */
-
-    const carousel =
-        document.getElementById("specialCarousel");
-
+    const carousel = document.getElementById("specialCarousel");
     if (carousel) {
+        const cards = [...carousel.querySelectorAll(".special-card")];
+        const currentDisplay = document.getElementById("specialCurrent");
+        const announcement = document.getElementById("specialAnnouncement");
+        const previousButton = document.getElementById("specialPrevious");
+        const nextButton = document.getElementById("specialNext");
+        let currentIndex = Math.max(0, cards.findIndex(card => card.classList.contains("active")));
 
-        const cards = Array.from(
-            carousel.querySelectorAll(".special-card")
-        );
-
-        const currentDisplay =
-            document.getElementById("specialCurrent");
-
-        let currentIndex = 0;
-        let isAnimating = false;
-
-
-        const updateCarousel = index => {
-
-            if (
-                isAnimating ||
-                index < 0 ||
-                index >= cards.length ||
-                index === currentIndex
-            ) {
-                return;
-            }
-
-            isAnimating = true;
-
-            currentIndex = index;
+        const showProgramme = (index, announce = true) => {
+            if (!cards.length) return;
+            currentIndex = (index + cards.length) % cards.length;
 
             cards.forEach((card, cardIndex) => {
-
-                const position =
-                    (
-                        cardIndex -
-                        currentIndex +
-                        cards.length
-                    ) % cards.length;
-
-
-                card.classList.toggle(
-                    "active",
-                    position === 0
-                );
-                card.inert = position !== 0;
-                card.setAttribute("aria-hidden", String(position !== 0));
-                card.setAttribute("aria-pressed", String(position === 0));
-
-
-                card.setAttribute(
-                    "data-pos",
-                    String(position)
-                );
-
-
-                card.setAttribute(
-                    "aria-current",
-                    position === 0
-                        ? "true"
-                        : "false"
-                );
-
+                const position = (cardIndex - currentIndex + cards.length) % cards.length;
+                const active = position === 0;
+                card.classList.toggle("active", active);
+                card.inert = !active;
+                card.setAttribute("aria-hidden", String(!active));
+                card.setAttribute("aria-current", String(active));
+                card.removeAttribute("aria-pressed");
+                card.setAttribute("aria-label", `Show programme: ${card.dataset.title || `programme ${cardIndex + 1}`}`);
+                card.dataset.pos = String(position);
             });
 
-
-            if (currentDisplay) {
-
-                currentDisplay.textContent =
-                    String(currentIndex + 1).padStart(2, "0");
-
+            const title = cards[currentIndex].dataset.title || `Programme ${currentIndex + 1}`;
+            if (currentDisplay) currentDisplay.textContent = String(currentIndex + 1).padStart(2, "0");
+            if (announcement && announce) {
+                announcement.textContent = `${title}, programme ${currentIndex + 1} of ${cards.length}`;
             }
-
-
-            window.setTimeout(() => {
-
-                isAnimating = false;
-
-            }, prefersReducedMotion ? 0 : 450);
-
         };
 
-
-        const showNextCard = () => {
-
-            const nextIndex =
-                (currentIndex + 1) % cards.length;
-
-            updateCarousel(nextIndex);
-
-        };
-
-
         cards.forEach((card, index) => {
-
-            card.setAttribute(
-                "aria-label",
-                `Show programme: ${card.dataset.title || `programme ${index + 1}`}`
-            );
-
-            card.setAttribute(
-                "aria-controls",
-                "specialCarousel"
-            );
-
-
-            card.addEventListener("click", () => {
-
-                if (index !== currentIndex) {
-                    updateCarousel(index);
-                } else {
-                    showNextCard();
-                }
-
-            });
-
+            card.addEventListener("click", () => showProgramme(index));
         });
-
-        /*
-            Initial carousel state
-        */
-
-        cards.forEach((card, index) => {
-
-            const position =
-                (
-                    index -
-                    currentIndex +
-                    cards.length
-                ) % cards.length;
-
-
-            card.classList.toggle(
-                "active",
-                position === 0
-            );
-            card.inert = position !== 0;
-            card.setAttribute("aria-hidden", String(position !== 0));
-            card.setAttribute("aria-pressed", String(position === 0));
-
-
-            card.setAttribute(
-                "data-pos",
-                String(position)
-            );
-
-
-            card.setAttribute(
-                "aria-current",
-                position === 0
-                    ? "true"
-                    : "false"
-            );
-
-        });
-
-
-        if (currentDisplay) {
-            currentDisplay.textContent = "01";
-        }
-
+        previousButton?.addEventListener("click", () => showProgramme(currentIndex - 1));
+        nextButton?.addEventListener("click", () => showProgramme(currentIndex + 1));
+        showProgramme(currentIndex, false);
     }
 
-
-    /* =====================================================
-       ACTIVE NAVIGATION SECTION
-    ===================================================== */
-
-    const navigationLinks =
-        document.querySelectorAll(
-            '.desktop-nav a[href^="#"], .mobile-nav a[href^="#"]'
-        );
-
-    const sections =
-        document.querySelectorAll("section[id]");
-
-
-    const setActiveNavigation = sectionId => {
-
-        navigationLinks.forEach(link => {
-
-            const linkTarget =
-                link.getAttribute("href");
-
-            const isActive =
-                linkTarget === `#${sectionId}`;
-
-            link.classList.toggle(
-                "active",
-                isActive
-            );
-
-            if (isActive) {
-
-                link.setAttribute(
-                    "aria-current",
-                    "location"
-                );
-
-            } else {
-
-                link.removeAttribute(
-                    "aria-current"
-                );
-
-            }
-
-        });
-
-    };
-
-
-    /*
-        Update the active navigation item according
-        to the section currently closest to the top.
-    */
-
-    const updateActiveNavigation = () => {
-
-        const headerHeight =
-            header
-                ? header.offsetHeight
-                : 0;
-
-        const scrollPosition =
-            window.scrollY + headerHeight + 80;
-
-        let currentSectionId = "";
-
-        sections.forEach(section => {
-
-            if (section.offsetTop <= scrollPosition) {
-
-                currentSectionId =
-                    section.getAttribute("id");
-
-            }
-
-        });
-
-
-        if (currentSectionId) {
-            setActiveNavigation(currentSectionId);
-        }
-
-    };
-
-
-    if (
-        navigationLinks.length > 0 &&
-        sections.length > 0
-    ) {
-
-        updateActiveNavigation();
-
-        window.addEventListener(
-            "scroll",
-            updateActiveNavigation,
-            { passive: true }
-        );
-
-    }
-
-
-    /* =====================================================
-       COPYRIGHT YEAR
-    ===================================================== */
-
-    const year =
-        document.getElementById("currentYear");
-
-    if (year) {
-
-        year.textContent =
-            new Date().getFullYear();
-
-    }
-
-
-    /* =====================================================
-       SMOOTH ANCHOR NAVIGATION
-    ===================================================== */
-
-    document
-        .querySelectorAll('a[href^="#"]')
-        .forEach(link => {
-
-            link.addEventListener("click", event => {
-
-                const targetId =
-                    link.getAttribute("href");
-
-
-                if (
-                    !targetId ||
-                    targetId === "#"
-                ) {
-                    return;
-                }
-
-
-                const target =
-                    document.querySelector(targetId);
-
-
-                if (!target) {
-                    return;
-                }
-
-
-                event.preventDefault();
-
-
-                const headerElement =
-                    document.querySelector(".site-header");
-
-
-                const headerHeight =
-                    headerElement
-                        ? headerElement.offsetHeight
-                        : 0;
-
-
-                const targetTop =
-                    Math.max(
-                        0,
-                        target.getBoundingClientRect().top +
-                        window.scrollY -
-                        headerHeight -
-                        12
-                    );
-
-
-                window.scrollTo({
-
-                    top: targetTop,
-
-                    behavior: prefersReducedMotion
-                        ? "auto"
-                        : "smooth"
-
-                });
-
-
-                const sectionId =
-                    target.getAttribute("id");
-
-                if (sectionId) {
-                    setActiveNavigation(sectionId);
-                }
-
-            });
-
-        });
-
-
-    /* =====================================================
-       ESCAPE KEY CLOSES MOBILE MENU
-    ===================================================== */
-
-    document.addEventListener("keydown", event => {
-
-        if (
-            event.key === "Escape" &&
-            mobileNav &&
-            mobileNav.classList.contains("active")
-        ) {
-
-            mobileNav.classList.remove("active");
-            mobileNav.inert = true;
-            mobileNav.setAttribute("aria-hidden", "true");
-
-            if (menuButton) {
-
-                menuButton.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                menuButton.setAttribute(
-                    "aria-label",
-                    "Open menu"
-                );
-                menuButton.focus();
-
-            }
-
-        }
-
-    });
-
-});
-
-/* =========================================================
-   HERO IMAGE - SCROLL WITH PAGE
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-
+    const year = document.getElementById("currentYear");
+    if (year) year.textContent = String(new Date().getFullYear());
+
+    const navLinks = [...document.querySelectorAll('.desktop-nav a[data-section], .mobile-nav a[data-section]')];
+    const navTargets = [...document.querySelectorAll('.desktop-nav a[data-section]')]
+        .map(link => document.getElementById(link.dataset.section))
+        .filter(Boolean);
     const hero = document.querySelector(".hero");
     const heroImage = document.querySelector(".hero-image");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const liveSection = document.querySelector(".live");
+    const liveBackground = document.querySelector(".live-bg");
+    let scrollFrame = 0;
 
-    if (!hero || !heroImage || reduceMotion) return;
-
-    let lastScrollY = window.scrollY;
-    let currentPosition = 0;
-    let ticking = false;
-
-    const updateHeroImage = () => {
-
+    const updateScrollEffects = () => {
+        scrollFrame = 0;
         const scrollY = window.scrollY;
 
-        /*
-         * The image follows the user's scrolling.
-         *
-         * Scroll down  -> image moves upward
-         * Scroll up    -> image moves downward
-         */
-        const movement = scrollY * 0.18;
+        header?.classList.toggle("scrolled", scrollY > 30);
 
-        heroImage.style.transform =
-            `translate3d(0, ${-movement}px, 0) scale(1.04)`;
+        const navPosition = scrollY + (header?.offsetHeight || 0) + 88;
+        let activeId = "";
+        navTargets.forEach(target => {
+            if (target.offsetTop <= navPosition) activeId = target.id;
+        });
+        navLinks.forEach(link => {
+            const active = link.dataset.section === activeId;
+            link.classList.toggle("active", active);
+            if (active) link.setAttribute("aria-current", "location");
+            else link.removeAttribute("aria-current");
+        });
 
-        lastScrollY = scrollY;
-        ticking = false;
-    };
+        if (reduceMotion.matches) {
+            if (heroImage) heroImage.style.transform = "none";
+            if (liveBackground) liveBackground.style.transform = "none";
+            return;
+        }
 
-    const onScroll = () => {
+        if (hero && heroImage && scrollY < hero.offsetHeight) {
+            heroImage.style.transform = `translate3d(0, ${-Math.min(scrollY * 0.12, 100)}px, 0) scale(1.04)`;
+        }
 
-        if (!ticking) {
-
-            window.requestAnimationFrame(
-                updateHeroImage
-            );
-
-            ticking = true;
+        if (liveSection && liveBackground) {
+            const rect = liveSection.getBoundingClientRect();
+            if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+                liveBackground.style.transform = `translate3d(0, ${(progress - 0.5) * 80}px, 0)`;
+            }
         }
     };
 
-    window.addEventListener(
-        "scroll",
-        onScroll,
-        { passive: true }
-    );
+    const scheduleScrollEffects = () => {
+        if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateScrollEffects);
+    };
 
-    window.addEventListener(
-        "resize",
-        updateHeroImage
-    );
-
-    updateHeroImage();
+    scheduleScrollEffects();
+    window.addEventListener("scroll", scheduleScrollEffects, { passive: true });
+    window.addEventListener("resize", scheduleScrollEffects, { passive: true });
+    window.addEventListener("hashchange", scheduleScrollEffects);
+    reduceMotion.addEventListener?.("change", scheduleScrollEffects);
 });
-
-/* =========================================================
-   LIVE SECTION IMAGE PARALLAX
-   ONLY .live-bg MOVES
-========================================================= */
-
-(() => {
-    const liveSection = document.querySelector(".live");
-    const liveBg = document.querySelector(".live-bg");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (!liveSection || !liveBg || reduceMotion) return;
-
-    let ticking = false;
-
-    function updateLiveParallax() {
-        const rect = liveSection.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-
-        /* Only animate while the LIVE section is visible */
-        if (rect.bottom > 0 && rect.top < viewportHeight) {
-
-            /*
-             * Progress:
-             * 0 = section entering viewport
-             * 1 = section leaving viewport
-             */
-            const progress =
-                (viewportHeight - rect.top) /
-                (viewportHeight + rect.height);
-
-            /*
-             * Move image DOWN as user scrolls DOWN.
-             * The section itself does NOT move.
-             */
-            const movement = (progress - 0.5) * 140;
-
-            liveBg.style.transform =
-                `translate3d(0, ${movement}px, 0)`;
-        }
-
-        ticking = false;
-    }
-
-    function requestUpdate() {
-        if (!ticking) {
-            window.requestAnimationFrame(updateLiveParallax);
-            ticking = true;
-        }
-    }
-
-    window.addEventListener("scroll", requestUpdate, {
-        passive: true
-    });
-
-    window.addEventListener("resize", requestUpdate);
-
-    updateLiveParallax();
-})();

@@ -2686,6 +2686,9 @@ em{font-style:normal;color:var(--red)}
 }
 
 .social-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     white-space: nowrap;
 }
 
@@ -2906,4 +2909,148 @@ body {
     .brand { gap: 8px; }
     .brand-copy small { display: none; }
     .brand-copy strong { font-size: 9px; letter-spacing: .25px; }
+}
+
+/* Accessible defaults and resilient enhancements. */
+html { scroll-padding-top: 96px; }
+section[id] { scroll-margin-top: 96px; }
+
+.reveal { opacity: 1; transform: none; }
+.js-enabled .reveal:not(.visible) {
+    opacity: 0;
+    transform: translateY(18px);
+}
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.carousel-controls {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.carousel-controls button {
+    display: inline-grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, .35);
+    border-radius: 50%;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color .2s ease, color .2s ease, transform .2s ease;
+}
+
+.carousel-controls button:hover {
+    background: #fff;
+    color: var(--charcoal);
+    transform: translateY(-2px);
+}
+
+.social-note {
+    display: block;
+    color: rgba(255, 255, 255, .45);
+    font-size: 9px;
+    font-weight: 400;
+}
+
+.social-item:not(a) { cursor: default; opacity: .78; }
+.social-item:not(a):hover { color: rgba(255, 255, 255, .75); }
+.social-item:not(a):hover .social-icon { transform: none; }
+
+.special {
+    padding: 110px 0;
+    background: var(--charcoal);
+    color: #fff;
+}
+
+.special h2 { color: #fff; }
+.special .section-index,
+.special .eyebrow,
+.pastor .eyebrow { color: #ff8291; }
+.special-head > div:last-child > p { color: rgba(255, 255, 255, .72); }
+.hero h1 em { color: #ff8291; }
+
+/* Keep accent labels readable on the site's dark surfaces. */
+.service-lead span,
+.service-item > span,
+.footer-grid > div > small,
+.footer-online > small,
+.live .eyebrow,
+.pastor-copy .section-index,
+.pastor em,
+.live em {
+    color: #ff8291;
+}
+
+.prayer .eyebrow,
+.prayer em { color: #fff; }
+.social-note { color: rgba(255, 255, 255, .72); }
+.btn-dark:focus-visible { outline-color: #fff; }
+
+@media (max-width: 960px) {
+    body:not(.js-enabled) {
+        padding-top: 0;
+    }
+
+    body:not(.js-enabled) .site-header {
+        position: relative;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+
+    body:not(.js-enabled) .menu-btn {
+        display: none;
+    }
+
+    body:not(.js-enabled) .site-header .mobile-nav {
+        display: flex;
+        max-height: none;
+        overflow: visible;
+        box-shadow: none;
+    }
+
+    .js-enabled .site-header .mobile-nav {
+        max-height: 0;
+        overflow: hidden;
+    }
+
+    .js-enabled .site-header .mobile-nav.active {
+        max-height: 520px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-status { flex-wrap: wrap; }
+    .carousel-controls { margin-left: auto; }
+    .special-carousel { overflow: hidden; }
+}
+
+@media (max-width: 800px) {
+    .special { padding: 78px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .js-enabled .reveal:not(.visible) {
+        opacity: 1;
+        transform: none;
+    }
+
+    .carousel-controls button,
+    .btn,
+    .social-icon {
+        transition: none;
+    }
 }
