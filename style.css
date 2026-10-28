@@ -1301,8 +1301,8 @@ em{font-style:normal;color:var(--red)}
     background-position: center center;
 }
 
-.media-visual.updates {
-    background-image: url("images/updates.jpg");
+.media-visual.production {
+    background-image: url("images/media-production.png");
     background-position: center center;
 }
 
