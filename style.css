@@ -62,7 +62,7 @@ em{font-style:normal;color:var(--red)}
 .hero-inner{position:relative;z-index:2;padding:130px 0 105px}
 .hero-copy{max-width:900px}
 .overline{font-size:15px;font-weight:800;letter-spacing:3px;color:rgba(255,255,255,.9)}
-.hero h1{margin:24px 0 18px;font-size:clamp(78px,11vw,154px);line-height:.78;letter-spacing:-7px;color:#fff}
+.hero h1{max-width:100%;margin:24px auto 18px;text-align:center;font-size:clamp(78px,11vw,154px);line-height:.9;letter-spacing:-5px;color:#fff}
 .hero-title{font:500 clamp(25px,2.4vw,36px)/1.2 "Playfair Display",serif}
 .hero-text{max-width:580px;margin-top:18px;color:rgba(255,255,255,.72);font-size:16px;line-height:1.7}
 .hero-actions{display:flex;gap:12px;margin-top:31px}
@@ -108,7 +108,7 @@ em{font-style:normal;color:var(--red)}
 }
 
 .nav-wrap {
-    width: min(calc(100% - 56px), var(--max));
+    width: min(calc(100% - 56px), 1480px);
     height: 86px;
 
     margin: 0 auto;
